@@ -28,6 +28,12 @@ async def handle_select_state(alice_request):
     else:
         return alice_request.response('Тип не распознан, повторите пожалуйста, на резисторе 4 или 5 полос?')
 
+@dp.request_handler(func=lambda areq: areq.session.new)
+async def handle_new_session(alice_request):
+    user_id = alice_request.session.user_id
+    USERS[user_id] = User()
+    return alice_request.response('Привет! Этот навык позволяет вычислить наминал  резистора по цветовой маркеровке. Для выхода из навыка скажите алиса хватит, для помощи скажите справка. Сколько полос на резисторе? Четыре или пять?')
+
 
 @dp.request_handler(func=lambda areq: USERS[alice_request.session.user_id].state=="4rows")
 async def handle_4rows(alice_request):
@@ -53,11 +59,6 @@ async def handle_5rows(alice_request):
     else:
         return alice_request.response('Цвет не распознан, повторите.')
         
-@dp.request_handler(func=lambda areq: areq.session.new)
-async def handle_new_session(alice_request):
-    user_id = alice_request.session.user_id
-    USERS[user_id] = User()
-    return alice_request.response('Привет! Этот навык позволяет вычислить наминал  резистора по цветовой маркеровке. Для выхода из навыка скажите алиса хватит, для помощи скажите справка. Сколько полос на резисторе? Четыре или пять?')
 
 @dp.request_handler()
 async def handle_all_other_requests(alice_request):
