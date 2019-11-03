@@ -23,14 +23,14 @@ async def handle_new_session(alice_request):
     USERS[user_id] = User()
     return alice_request.response('Привет! Этот навык позволяет вычислить наминал  резистора по цветовой маркеровке. Для выхода из навыка скажите алиса хватит, для помощи скажите справка. Сколько полос на резисторе? Четыре или пять?')
 
-@dp.request_handler(func=lambda areq: USERS[areq.session.user_id].state=="select_state")
+@dp.request_handler(func=lambda areq: USERS[areq.session.user_id].state=="select_type")
 async def handle_select_state(alice_request):
     user_id = alice_request.session.user_id
     if int(alice_request.request.command) == 4:
-        USERS[user_id] = "4rows"
+        USERS[user_id].state = "4rows"
         return alice_request.response('выбран четырехполосной код, назовите цвет первой полосы')
     elif int(alice_request.request.command) == 5:
-        USERS[user_id] = "5rows"
+        USERS[user_id].state = "5rows"
         return alice_request.response('выбран пятиполосный код, назовите цвет первой полосы')
     else:
         return alice_request.response('Тип не распознан, повторите пожалуйста, на резисторе 4 или 5 полос?')
@@ -65,8 +65,6 @@ async def handle_all_other_requests(alice_request):
     # Всеми силами убеждаем пользователя     купить слона,
     # предлагаем варианты ответа на основе текста запроса
     print(alice_request.session.user_id)
-    requst_text = alice_request.request.original_utterance
-    suggests = await get_suggests(alice_request.session.user_id)
     return alice_request.response('цвет или количество колец названы неверно. скажите справка для списка команд')
 
 
