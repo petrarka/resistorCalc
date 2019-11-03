@@ -35,7 +35,7 @@ async def handle_select_state(alice_request):
     else:
         return alice_request.response('Тип не распознан, повторите пожалуйста, на резисторе 4 или 5 полос?')
 
-@dp.request_handler(func=lambda areq: USERS[alice_request.session.user_id].state=="4rows")
+@dp.request_handler(func=lambda areq: USERS[areq.session.user_id].state=="4rows")
 async def handle_4rows(alice_request):
     user_id = alice_request.session.user_id
 
@@ -47,7 +47,7 @@ async def handle_4rows(alice_request):
     else:
         return alice_request.response('Цвет не распознан, повторите.')
 
-@dp.request_handler(func=lambda areq: USERS[alice_request.session.user_id].state=="5rows")
+@dp.request_handler(func=lambda areq: USERS[areq.session.user_id].state=="5rows")
 async def handle_5rows(alice_request):
     user_id = alice_request.session.user_id
 
