@@ -51,7 +51,8 @@ async def handle_4rows(alice_request):
 
     if  alice_request.request.command in COLORS:
         USERS[user_id].rows.append(COLORS[alice_request.request.command])
-        if len(USERS[user_id].rows) == 2:
+        if len(USERS[user_id].rows) == 3:
+            print('state sm')
             USERS[user_id].state='select_multy'
         return alice_request.response('Назовите цвет {} полосы'.format(ROWW[len(USERS[user_id].rows)-1]))
     else:
@@ -63,7 +64,7 @@ async def handle_5rows(alice_request):
 
     if  alice_request.request.command in COLORS:
         USERS[user_id].rows.append(COLORS[alice_request.request.command])
-        if len(USERS[user_id].rows) == 3:
+        if len(USERS[user_id].rows) == 4:
             USERS[user_id].state='select_multy'
         return alice_request.response('Назовите цвет {} полосы'.format(ROWW[len(USERS[user_id].rows)-1]))
     else:
@@ -71,6 +72,7 @@ async def handle_5rows(alice_request):
         
 @dp.request_handler(func=lambda areq: USERS[areq.session.user_id].state=="select_multy")
 def handle_multy(alice_request):
+    print('mult')
     user_id = alice_request.session.user_id
     if  alice_request.request.command in MULTY_COLORS:
         USERS[user_id].rows.append(MULTY_COLORS[alice_request.request.command])
