@@ -75,11 +75,14 @@ def handle_multy(alice_request):
     print('mult')
     user_id = alice_request.session.user_id
     if  alice_request.request.command in MULTY_COLORS:
+    print('if')
         USERS[user_id].rows.append(MULTY_COLORS[alice_request.request.command])
-        USERS[user_id].mw = COLORSЦ[alice_request.request.command]
+        USERS[user_id].mw = COLORS[alice_request.request.command]
         USERS[user_id].state='select_error'
+        print(1111111111111111111)
         return alice_request.response('Назовите цвет {} полосы'.format(ROWW[len(USERS[user_id].rows)-1]))
     else:
+        print(22222222222222222)
         return alice_request.response('Цвет не распознан, повторите.')
 
 @dp.request_handler(func=lambda areq: USERS[areq.session.user_id].state=="select_error")
